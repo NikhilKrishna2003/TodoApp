@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <title>TODO APP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<script>
+
+    function deletedone(){
+        console.log("deletedone");
+    }
+
+    function deleteid(id){
+        fetch("http://localhost:3000/index/"+id,{
+            method:"DELETE",
+            headers: {
+            "Content-Type":"appication/json"
+            }
+        }).then(deletedone);
+    }
+
+    function callback3(data){
+        console.log(data);
+        var parentElement = document.getElementById("mainArea");
+        for(var i =0;i<data.length;i++){
+            var childElement = document.createElement("div");
+
+            var grandchildElement1 = document.createElement("span");
+            grandchildElement1.innerHTML=data[i].movie;
+
+            var grandchildElement2 = document.createElement("span");
+            grandchildElement2.innerHTML=data[i].hero;
+            var grandchildElement2 = document.createElement("span");
+            grandchildElement2.innerHTML="  ";
+            var grandchildElement3 = document.createElement("button");
+            grandchildElement3.innerHTML="Delete";
+            grandchildElement3.setAttribute("onclick","deleteid("+data[i].id+")");
+
+
+            childElement.appendChild(grandchildElement1);
+            childElement.appendChild(grandchildElement2);
+            childElement.appendChild(grandchildElement3);
+
+            parentElement.appendChild(childElement);
+        }
+    }
+
+    function callback2(resp2){
+        resp2.json().then(callback3);
+    }
+
+    function get(){
+        fetch("http://localhost:3000/index",{
+            method:"GET"
+        }).then(callback2);
+    }
+
+    get();
+
+    function logresponse(data){
+        console.log(data);
+        var parentElement = document.getElementById("mainArea");
+        var childElement = document.createElement("div");
+
+        var grandchildElement1 = document.createElement("span");
+        grandchildElement1.innerHTML=data.movie;
+
+        var grandchildElement2 = document.createElement("span");
+        grandchildElement2.innerHTML=data.hero;
+        grandchildElement2.innerHTML="  ";
+
+        var grandchildElement3 = document.createElement("button");
+        grandchildElement3.innerHTML="Delete";
+
+        childElement.appendChild(grandchildElement1);
+        childElement.appendChild(grandchildElement2);
+        childElement.appendChild(grandchildElement3);
+
+        parentElement.appendChild(childElement);
+    }
+
+    function callback(resp){
+        resp.json().then(logresponse);
+    }
+
+    function onPress(){
+        var movie = document.getElementById("movie").value;
+        var hero = document.getElementById("hero").value;
+
+        fetch("http://localhost:3000/index",{
+            method:"POST",
+            body: JSON.stringify({
+                movie:movie +"  ",
+                hero:hero
+            }),headers:{
+                "Content-Type":"application/json"
+            }
+        }).then(callback);
+    }
+</script>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="./scr.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+            Todo
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://localhost:3000/index">Nodejs List</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Movie
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">hero</a></li>
+                <li><a class="dropdown-item" href="#">villian</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">direction</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">no entry</a>
+            </li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+       Successfully you entered...<span class="badge bg-success">New</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<br>
+    <div class="d-flex flex-column mb-3">
+      <div class="card card-body">
+        <form>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Activity</label>
+              <input type="text" class="form-control" id="movie" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Time</label>
+              <input type="text" class="form-control" id="hero">
+            </div>
+            <button type="button" class="btn btn-success" onclick="onPress()"> Submit Todo</button>
+        </form>
+      </div> <br><br>
+      <div class="p-2 card card-body" id="mainArea">
+        <div class="alert alert-info" role="alert"><h4>Pending Tasks</h4></div>
+      </div>
+    </div>
+    <br><br><br><br><br><br><br>
+    
+</body>
+</html>
+

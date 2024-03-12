@@ -1,0 +1,41 @@
+body{
+    background-color: black;
+    position: absolute;
+    align-items: center;
+    display: grid;
+}
+#Question{
+    display: flex;
+    justify-content:center;
+    /* flex-direction:column; */
+    background-color: rgb(50, 49, 49);
+    position: relative;
+    align-items: center;
+    min-width: 700px;
+    max-height: 200px;
+    left: 550px;
+    top: 100px;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 530;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+}
+#mainArea{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color: rgb(50, 49, 49);
+    position: relative;
+    align-items: center;
+    max-width: 450px;
+    min-height: 100px;
+    left: 550px;
+    top: 200px;
+    border-radius: 7px;
+    font-size: 20px;
+    font-weight: 530;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+}
+
